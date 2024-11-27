@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <form action="/">
+        <label for="apiKEY">API KEY</label><br />
+        <input type="text" name="apiKEY" class="api" /><br />
+        <label for="searchContent">Search Content</label><br />
+        <input type="text" name="searchContent" class="searchContent" /><br />
+        <button class="searchBtn">Search</button>
+      </form>
+    </div>
+    <div>
+      <img src="#" />
+    </div>
+    <button class="anotherBtn">Another one!</button>
+    <script>
+      const apiArea = document.querySelector(".api");
+      const searchArea = document.querySelector(".searchContent");
+      const searchBtn = document.querySelector(".searchBtn");
+      let api = undefined;
+      let searchContent = undefined;
+      searchBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        api = apiArea.value;
+        searchContent = searchArea.value;
+        fetchGIF(api, searchContent);
+      });
+      const img = document.querySelector("img");
+      const fetchGIF = (api, stuff) => {
+        fetch(
+          "https://api.giphy.com/v1/gifs/translate?api_key=" +
+            api +
+            "&s=" +
+            stuff,
+          { mode: "cors" }
+        )
+          .then(function (response) {
+            if (!response.ok) {
+              alert("Check your api or search content!");
+            }
+            return response.json();
+          })
+          .then(function (response) {
+            img.src = response.data.images.original.url;
+          });
+      };
+      //fetchGIF("cat");
+      const anotherBtn = document.querySelector(".anotherBtn");
+      anotherBtn.addEventListener("click", () => {
+        fetchGIF(api, searchContent);
+      });
+    </script>
+  </body>
+</html>
